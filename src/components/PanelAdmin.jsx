@@ -114,15 +114,15 @@ const PanelAdmin = () => {
                       disabled={savingId === u.id}
                       style={{ 
                         background: 'var(--bg-color)', 
-                        color: u.rol === 'ADMIN' ? 'var(--accent-primary)' : 'white',
+                        color: u.rol === 'administrador' ? 'var(--accent-primary)' : 'white',
                         border: '1px solid var(--border-color)',
                         padding: '0.3rem 0.5rem',
                         borderRadius: '4px',
-                        fontWeight: u.rol === 'ADMIN' ? 'bold' : 'normal'
+                        fontWeight: u.rol === 'administrador' ? 'bold' : 'normal'
                       }}
                     >
-                      <option value="USER">Usuario Normal</option>
-                      <option value="ADMIN">Administrador</option>
+                      <option value="usuario">Usuario Normal</option>
+                      <option value="administrador">Administrador</option>
                     </select>
                   </td>
                   <td style={{ padding: '1rem' }}>

@@ -77,11 +77,11 @@ function App() {
         await supabase.auth.signOut();
         return;
       }
-      setUserRole(data?.rol || 'USER');
+      setUserRole(data?.rol || 'usuario');
     } catch (err) {
       console.error("Error obteniendo rol:", err);
-      // Por defecto asignamos USER si falla (podría fallar por RLS si no está bien configurado)
-      setUserRole('USER');
+      // Por defecto asignamos usuario si falla (podría fallar por RLS si no está bien configurado)
+      setUserRole('usuario');
     } finally {
       setAuthLoading(false);
     }
@@ -210,7 +210,7 @@ function App() {
             Registrar Nueva Ficha
           </button>
           
-          {userRole === 'ADMIN' && (
+          {userRole === 'administrador' && (
             <button 
               className={`btn ${activeTab === 'admin' ? 'btn-primary' : ''}`}
               onClick={() => setActiveTab('admin')}
@@ -225,7 +225,7 @@ function App() {
 
       {activeTab === 'nuevo' ? (
         <FormularioFicha onBack={() => setActiveTab('dashboard')} />
-      ) : activeTab === 'admin' && userRole === 'ADMIN' ? (
+      ) : activeTab === 'admin' && userRole === 'administrador' ? (
         <PanelAdmin />
       ) : (
         <main className="main-content">

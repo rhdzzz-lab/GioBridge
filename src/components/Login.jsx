@@ -48,7 +48,7 @@ const Login = () => {
               id: data.user.id,
               nombre: nombre,
               email: email,
-              rol: 'USER', // Por defecto todos son USER
+              rol: 'usuario', // Por defecto todos son usuario
               activo: true
             });
 
