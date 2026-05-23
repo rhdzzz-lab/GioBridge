@@ -1,0 +1,87 @@
+.ficha-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.ficha-modal {
+  background: white;
+  color: black;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  position: relative;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.ficha-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #cbd5e1;
+  position: sticky;
+  top: 0;
+}
+
+.close-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.ficha-content {
+  padding: 20px;
+}
+
+.ficha-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ficha-table th, .ficha-table td {
+  border: 1px solid #000;
+  padding: 5px;
+}
+
+.ficha-table .bg-blue {
+  background-color: #93c5fd;
+  font-weight: bold;
+}
+
+.ficha-table .bg-light-blue {
+  background-color: #bfdbfe;
+}
+
+.ficha-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.foto-container img {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  display: block;
+  margin: 0 auto;
+}
