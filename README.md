@@ -58,9 +58,11 @@ GeoBridge es una plataforma web integral diseñada para el registro, gestión y 
 
 Para instrucciones detalladas sobre cómo utilizar el sistema, por favor consulta nuestro [Manual de Usuario](MANUAL_DE_USUARIO.md) incluido en este repositorio.
 
-## 🤝 Contribuciones
+## 👥 Autores y Contribuciones
 
-Si deseas contribuir a este proyecto, siéntete libre de hacer un _fork_ del repositorio y enviar un _pull request_ con tus mejoras.
+Proyecto elaborado y desarrollado por:
+- **Hernández Ríos Roberto Ángel**
+- **Diaz Veytia Marcos**
 
 ---
-*Desarrollado con ❤️ para la gestión eficiente de infraestructura.*
+*Plataforma desarrollada para la optimización y gestión eficiente de infraestructura topográfica.*
