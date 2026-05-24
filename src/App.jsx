@@ -36,6 +36,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedFicha, setSelectedFicha] = useState(null);
+  const [fichaToEdit, setFichaToEdit] = useState(null);
 
   const tableName = import.meta.env.VITE_SUPABASE_TABLE_NAME || 'ficha_alcantarilla';
   const latCol = import.meta.env.VITE_LATITUDE_COLUMN || 'utm_norte';
@@ -140,6 +141,12 @@ function App() {
     downloadCSV(csvData, `${tableName}_export.csv`);
   };
 
+  const handleExportGeoJSON = () => {
+    if (data.length === 0) return;
+    const geoJSONData = convertToGeoJSON(data, latCol, lngCol);
+    downloadGeoJSON(geoJSONData, `${tableName}_export.geojson`);
+  };
+
   if (authLoading) {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'white' }}><Loader2 className="animate-spin" size={40} /></div>;
   }
@@ -203,7 +210,7 @@ function App() {
           </button>
           <button 
             className={`btn ${activeTab === 'nuevo' ? 'btn-success' : ''}`}
-            onClick={() => setActiveTab('nuevo')}
+            onClick={() => { setActiveTab('nuevo'); setFichaToEdit(null); }}
             style={activeTab !== 'nuevo' ? { backgroundColor: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-primary)' } : {}}
           >
             <PlusCircle size={18} />
@@ -224,7 +231,10 @@ function App() {
       </header>
 
       {activeTab === 'nuevo' ? (
-        <FormularioFicha onBack={() => setActiveTab('dashboard')} />
+        <FormularioFicha 
+          onBack={() => { setActiveTab('dashboard'); setFichaToEdit(null); }} 
+          initialData={fichaToEdit} 
+        />
       ) : activeTab === 'admin' && userRole === 'administrador' ? (
         <PanelAdmin />
       ) : (
@@ -242,15 +252,26 @@ function App() {
               )}
             </div>
             <div style={{ flex: 1 }}></div>
-            <button 
-              className="btn btn-success" 
-              onClick={handleExport}
-              disabled={loading || data.length === 0}
-              style={{ width: '100%', padding: '1rem' }}
-            >
-              {loading ? <Loader2 size={20} className="animate-spin" /> : <Download size={20} />}
-              Exportar a CSV
-            </button>
+            <div style={{ display: 'flex', gap: '1rem', width: '100%', flexWrap: 'wrap' }}>
+              <button 
+                className="btn btn-success" 
+                onClick={handleExport}
+                disabled={loading || data.length === 0}
+                style={{ flex: 1, padding: '1rem', minWidth: '150px' }}
+              >
+                {loading ? <Loader2 size={20} className="animate-spin" /> : <Download size={20} />}
+                Exportar a CSV
+              </button>
+              <button 
+                className="btn btn-primary" 
+                onClick={handleExportGeoJSON}
+                disabled={loading || data.length === 0}
+                style={{ flex: 1, padding: '1rem', minWidth: '150px' }}
+              >
+                {loading ? <Loader2 size={20} className="animate-spin" /> : <MapPin size={20} />}
+                Exportar a GeoJSON (QGIS)
+              </button>
+            </div>
           </div>
 
           <div className="panel" style={{ padding: 0, overflow: 'hidden' }}>
@@ -262,21 +283,15 @@ function App() {
                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                   />
                   {mapMarkers.map((item, index) => (
-                    <Marker key={index} position={[item._mapLat, item._mapLng]}>
+                    <Marker 
+                      key={index} 
+                      position={[item._mapLat, item._mapLng]}
+                      eventHandlers={{ click: () => setSelectedFicha(item) }}
+                    >
                       <Popup>
-                        <div style={{ color: '#0f172a', minWidth: '150px' }}>
-                          <strong>Ficha N#:</strong> {item.numero_ficha || item.id} <br/>
-                          <strong>Tramo:</strong> {item.tramo_vial || 'NA'} <br/>
-                          <button 
-                            onClick={() => setSelectedFicha(item)}
-                            style={{
-                              marginTop: '10px', background: '#3b82f6', color: 'white', border: 'none',
-                              padding: '5px 10px', borderRadius: '4px', cursor: 'pointer', display: 'flex', width: '100%', justifyContent: 'center'
-                            }}
-                          >
-                            <FileText size={14} style={{ marginRight: '5px' }} />
-                            Ver Ficha Técnica
-                          </button>
+                        <div style={{ color: '#0f172a', minWidth: '150px', textAlign: 'center' }}>
+                          <strong>Ficha N#: {item.numero_ficha || item.id}</strong> <br/>
+                          <span style={{ fontSize: '12px', color: '#64748b' }}>Clic para ver detalles</span>
                         </div>
                       </Popup>
                     </Marker>
@@ -289,7 +304,15 @@ function App() {
       )}
 
       {selectedFicha && (
-        <FichaTecnica data={selectedFicha} onClose={() => setSelectedFicha(null)} />
+        <FichaTecnica 
+          data={selectedFicha} 
+          onClose={() => setSelectedFicha(null)} 
+          onEdit={(ficha) => {
+            setFichaToEdit(ficha);
+            setSelectedFicha(null);
+            setActiveTab('nuevo');
+          }}
+        />
       )}
     </div>
   );
